@@ -12,7 +12,7 @@ def noah(request):
 def david(request):
     return HttpResponse("Hello, David!")
 
-def greet(request, name):
+def hello(request, name):
     return render(request, "hello/greet.html", {"name": name.capitalize()})
 
    
