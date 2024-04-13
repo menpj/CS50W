@@ -28,8 +28,12 @@ def wiki(request,name):
     if entryBody:
         entryBody= markdown2.markdown(entryBody)
         file1 = open(f"encyclopedia/templates/wiki/{name}.html","w")
-        
+        #file1.write('{% extends "./layout.html" %}\n')
+        file1.write('{% extends "encyclopedia/layout.html" %}\n')
+        file1.write('{% block body %}\n')
         file1.write(entryBody)
+        file1.write('\n{% endblock %}')
+
         file1.close()
         return render(request, f"wiki/{name}.html")
     else:
@@ -46,8 +50,14 @@ def wikiSearch(request):
         if entryBody:
             entryBody= markdown2.markdown(entryBody)
             file1 = open(f"encyclopedia/templates/wiki/{name}.html","w")
-            
+            #file1.write('{% extends "./layout.html" %}\n')
+            file1.write('{% extends "encyclopedia/layout.html" %}\n')
+            file1.write('{% block body %}\n')
             file1.write(entryBody)
+            file1.write('\n{% endblock %}')
+            #file1 = open(f"encyclopedia/templates/wiki/{name}.html","w")
+            #file1.write('{% extends "encyclopedia/layout.html" %}')
+            #file1.write(entryBody)
             file1.close()
             #return render(request, f"wiki/{name}.html")
             return HttpResponseRedirect(f"wiki/{name}")
@@ -98,8 +108,12 @@ def newPage(request):
                 entryBody=util.get_entry(title)
                 entryBody= markdown2.markdown(entryBody)
                 file1 = open(f"encyclopedia/templates/wiki/{title}.html","w")
-                
+                #file1.write('{% extends "encyclopedia/layout.html" %}')
+                file1.write('{% extends "encyclopedia/layout.html" %}\n')
+                file1.write('{% block body %}\n')
                 file1.write(entryBody)
+                file1.write('\n{% endblock %}')
+                #file1.write(entryBody)
                 file1.close()
                 #return render(request, f"wiki/{title}.html")
                 return HttpResponseRedirect(f"wiki/{title}")
