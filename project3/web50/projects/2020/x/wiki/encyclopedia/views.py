@@ -92,7 +92,18 @@ def newPage(request):
                 return HttpResponseRedirect(reverse("encyclopedia:newPageError"))
             else:
                 newfile= open(f"entries/{title}.md","w")
-                newfile.write()
+                newfile.write(body)
+                newfile.close()
+
+                entryBody=util.get_entry(title)
+                entryBody= markdown2.markdown(entryBody)
+                file1 = open(f"encyclopedia/templates/wiki/{title}.html","w")
+                
+                file1.write(entryBody)
+                file1.close()
+                #return render(request, f"wiki/{title}.html")
+                return HttpResponseRedirect(f"wiki/{title}")
+
         else:
             return render(request,"encyclopedia/newpage.html",{
                 "form":form
