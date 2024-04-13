@@ -16,6 +16,9 @@ def index(request):
         "entries": util.list_entries()
     })
 
+def newPageError(request):
+    return render(request, "encyclopedia/newpageerror.html")
+
 #def content(request):
 def wiki(request,name):
     #name=request.GET.get('name')
@@ -84,7 +87,12 @@ def newPage(request):
             body=form.cleaned_data["body"]
             print(title)
             print(body)
-            return HttpResponseRedirect(reverse("encyclopedia:index"))
+            entryBody=util.get_entry(title)
+            if entryBody:
+                return HttpResponseRedirect(reverse("encyclopedia:newPageError"))
+            else:
+                newfile= open(f"entries/{title}.md","w")
+                newfile.write()
         else:
             return render(request,"encyclopedia/newpage.html",{
                 "form":form

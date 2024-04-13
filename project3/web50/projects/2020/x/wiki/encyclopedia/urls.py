@@ -10,6 +10,7 @@ urlpatterns = [
     path("wiki",views.wiki,name="wiki"),
     path("wiki/<str:name>",views.wiki,name="wiki"),
     path("wikiSearch",views.wikiSearch,name="wikiSearch"),
-    path("newPage",views.newPage,name="newPage")
+    path("newPage",views.newPage,name="newPage"),
+    path("newPageError",views.newPageError,name="newPageError")
     
 ]
