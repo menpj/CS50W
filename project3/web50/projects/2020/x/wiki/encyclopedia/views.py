@@ -72,7 +72,7 @@ def wikiSearch(request):
     
 
 class NewTaskForm(forms.Form):
-    title=forms.CharField(label="New Page Title",help_text="New Page Title",empty_value="Page Title",max_length=100)
+    title=forms.CharField(label="New Page Title",empty_value="Page Title",max_length=100)
     body=forms.CharField(label="Page Body",widget=forms.Textarea)
     #priority = forms.IntegerField(label="Priority",min_value=1,max_value=10)
 
