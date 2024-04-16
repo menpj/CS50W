@@ -5,6 +5,7 @@ from . import util
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django import forms
+from string import Template
 
 import markdown2
 
@@ -15,6 +16,16 @@ def writetofile(name,entryBody):
     file1.write('{% extends "encyclopedia/layout.html" %}\n')
     file1.write('{% block body %}\n')
     file1.write(entryBody)
+    #editLink=f"<a href=\"{% url 'encyclopedia:editPage',{"name":{name}} %}\">Edit Page</a>"
+    #editLink=f"<a href=\"{% url 'encyclopedia:editPage' name=name %}\">Edit Page</a>"
+    #editLink=f"<a href=\"{% url 'encyclopedia:editPage' name='{name}' %}\">Edit Page</a>"
+    #editLink="<a href=\"{% url 'encyclopedia:editPage' name='{}' %}\">Edit Page</a>".format(name)
+    #editLink="<a href=\"{\% url 'encyclopedia:editPage',{'name': %s} \%}\">Edit Page</a>".format(name)
+    #editLink = Template("<a href=\"{% url 'encyclopedia:editPage' , {name:'$name' }} %}\">Edit Page</a>")
+    editLink = Template("<a href=\"{% url 'encyclopedia:editPage' name='$name'  %}\">Edit Page</a>")
+    editLink=editLink.substitute(name=name)
+    print(editLink)
+    file1.write(editLink)
     file1.write('\n{% endblock %}')
 
     file1.close()
@@ -129,3 +140,35 @@ def newPage(request):
             })
     return render(request, "encyclopedia/newpage.html",{"form": NewTaskForm()}) 
 
+class EditForm(forms.Form):
+
+    #def initial(self,name):
+    #    self.titleName==name
+    #def __init__(name):
+    def __init__(self,name):
+        super().__init__()
+        print("test")
+        self.titleName=name
+        self.fields['title'].initial=name
+
+        entryBody=util.get_entry(name)
+
+        self.fields['body'].initial= entryBody
+        #self.title=forms.CharField(label="Page Title",initial="test"   ,max_length=100)
+        #self.body=forms.CharField(label="Page Body",widget=forms.Textarea,initial="sample body")
+    title=forms.CharField(label="Page Title" ,max_length=100)
+    body=forms.CharField(label="Page Body",widget=forms.Textarea)
+    
+
+def editPage(request,name):
+    #print("test")
+    #print(name)
+    #return render(request, "encyclopedia/greet.html", {"name": name.capitalize()})
+    #if request.method=="POST":
+        
+    #edit=EditForm.initial(name="different one")
+
+
+    
+    return render(request,"encyclopedia/editpage.html",{"name": name,"form": EditForm(name)})
+    #return render(request,"encyclopedia/editpage.html",{"name": name,"form": edit()})
