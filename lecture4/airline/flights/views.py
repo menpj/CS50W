@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 from .models import Flight,Passenger,Airport
 
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, Http404   
 from django.urls import reverse
 
 # Create your views here.
@@ -12,7 +12,10 @@ def index(request):
     })
 
 def flight(request, flight_id):
-    flight=Flight.objects.get(id=flight_id)
+    try:
+        flight=Flight.objects.get(id=flight_id)
+    except Flight.DoesNotExist:
+        raise Http404("Flight Not Found")
     passengers = flight.passengers.all()
     non_passengers = Passenger.objects.exclude(flights=flight).all()
     for passenger in passengers:
