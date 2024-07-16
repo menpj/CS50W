@@ -1,0 +1,19 @@
+from file import *
+from selenium.webdriver.common.by import By
+
+class WebpageTests(unittest.TestCase):
+
+    def test_title(self):
+        driver.get(file_uri("counter.html"))
+        self.assertEqual(driver.title, "Counter")
+
+    def test_increase(self):
+        driver.get(file_uri("counter.html"))
+        increase = driver.find_element(By.ID,"increase")
+        increase.click()
+        self.assertEqual(driver.find_element_by_tag_name("h1").text, "1")
+
+
+
+if __name__ == "__main__":
+    unittest.main()
