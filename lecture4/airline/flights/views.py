@@ -10,6 +10,7 @@ def index(request):
     return render(request, "flights/index.html", {
         "flights": Flight.objects.all()
     })
+#random addition
 
 def flight(request, flight_id):
     try:
@@ -18,12 +19,22 @@ def flight(request, flight_id):
         raise Http404("Flight Not Found")
     passengers = flight.passengers.all()
     non_passengers = Passenger.objects.exclude(flights=flight).all()
+    print(f"NON PASSENGERS LIST {non_passengers}")
+    
+    npF = False
+    for passengers in non_passengers:
+        npF=True
+    if(npF):
+        print("there are non passengers")
+    else: 
+        print("there are no non passengers")
+    
     for passenger in passengers:
         print(passenger)
     return render(request, "flights/flight.html", {
         "flight": flight,
         "passengers": passengers,
-        "non_passengers":non_passengers
+        "non_passengers":non_passengers, npF:npF
 
     })
 
